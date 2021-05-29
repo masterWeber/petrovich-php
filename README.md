@@ -2,8 +2,6 @@
 
 ![Petrovich](https://raw.github.com/rocsci/petrovich/master/petrovich.png)
 
-[![Build Status](https://secure.travis-ci.org/masterweber/petrovich-php.svg?branch=master)](https://secure.travis-ci.org/masterweber/petrovich-php) [![Coverage Status](https://coveralls.io/repos/github/masterweber/petrovich-php/badge.svg?branch=master&service=github)](https://coveralls.io/github/masterweber/petrovich-php?branch=master) [![Latest Stable Version](https://poser.pugx.org/masterweber/petrovich-php/v/stable)](https://packagist.org/packages/masterweber/petrovich-php) [![Code Quality](https://scrutinizer-ci.com/g/masterweber/petrovich-php/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/masterweber/petrovich-php/?branch=master) [![Infection MSI](https://badge.stryker-mutator.io/github.com/masterweber/petrovich-php/master)](https://infection.github.io)
-
 Склонение падежей русских имён, фамилий и отчеств. Портированная версия с [Ruby](https://github.com/petrovich/petrovich-ruby) на PHP, использует [официальные правила](https://github.com/petrovich/petrovich-rules)
 
 ## Установка и использование
@@ -78,4 +76,3 @@ echo Petrovich::detectGender('Петровна'); // Petrovich::GENDER_FEMALE
 - [sebastianbergmann/phpunit](https://github.com/sebastianbergmann/phpunit)
 - [squizlabs/php_codesniffer](https://github.com/squizlabs/php_codesniffer)
 - [Coveralls](https://coveralls.io/)
-- [Travis CI](https://travis-ci.org/)
