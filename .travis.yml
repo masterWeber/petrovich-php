@@ -12,14 +12,10 @@ env:
 
 matrix:
     include:
-        -   php: 8
+        -   php: 8.0.5
             env:
                 - COMPOSER_ARGS="--no-interaction --ignore-platform-reqs"
-                - DEPS=latest
-        -   php: nightly
-            env:
-                - COMPOSER_ARGS="--no-interaction --ignore-platform-reqs"
-                - DEPS=latest
+                - DEPS=lates
 
     allow_failures:
         -   php: nightly
