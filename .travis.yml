@@ -1,8 +1,6 @@
-language: php
-
 cache:
     directories:
-        - "$HOME/.composer/cache"
+        - $HOME/.composer/cache
 
 env:
     global:
@@ -20,14 +18,15 @@ matrix:
                 - DEPS=latest
 
 before_install:
-    - if [[ $TEST_COVERAGE != 'true' ]]; then phpenv config-rm xdebug.ini || return 0 ; fi
+    - travis_retry composer self-update
+    - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then phpenv config-rm xdebug.ini || true; fi
 
 install:
-    - travis_retry composer install $COMPOSER_ARGS
-    - if [[ $DEPS == 'latest' ]]; then travis_retry composer update $COMPOSER_ARGS ; fi
-    - if [[ $DEPS == 'lowest' ]]; then travis_retry composer update --prefer-lowest --prefer-stable $COMPOSER_ARGS ; fi
-    - if [[ $TEST_COVERAGE == 'true' ]]; then travis_retry composer require --dev $COMPOSER_ARGS $COVERAGE_DEPS ; fi
-    - stty cols 120 && composer show
+    - if [[ $DEPS == 'latest' ]]; then travis_retry composer update --no-interaction ; fi
+    - if [[ $DEPS == 'lowest' ]]; then travis_retry composer update --prefer-lowest --prefer-stable --no-interaction ; fi
+    - if [[ $DEPS == 'locked' ]]; then travis_retry composer install --no-interaction --ignore-platform-reqs ; fi
+    - if [[ "$TRAVIS_OS_NAME" == "linux" || "$TRAVIS_OS_NAME" == "osx" ]]; then stty cols 120; fi
+    - COLUMNS=120 composer show
 
 script:
     - if [[ $TEST_COVERAGE == 'true' ]]; then composer run-script test-coverage --timeout=400 -- --verbose ; else composer run-script test --timeout=300 -- --verbose ; fi
