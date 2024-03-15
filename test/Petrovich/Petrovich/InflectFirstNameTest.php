@@ -266,10 +266,10 @@ final class InflectFirstNameTest extends TestCase
             'Зульфия' => [
                 Petrovich\Ruleset::CASE_NOMENATIVE => 'Зульфия',
                 Petrovich\Ruleset::CASE_GENITIVE => 'Зульфии',
-                Petrovich\Ruleset::CASE_DATIVE => 'Зульфии',
+                Petrovich\Ruleset::CASE_DATIVE => 'Зульфие',
                 Petrovich\Ruleset::CASE_ACCUSATIVE => 'Зульфию',
-                Petrovich\Ruleset::CASE_INSTRUMENTAL => 'Зульфией',
-                Petrovich\Ruleset::CASE_PREPOSITIONAL => 'Зульфии',
+                Petrovich\Ruleset::CASE_INSTRUMENTAL => 'Зульфиёй',
+                Petrovich\Ruleset::CASE_PREPOSITIONAL => 'Зульфие',
             ],
 
             'Мария' => [
