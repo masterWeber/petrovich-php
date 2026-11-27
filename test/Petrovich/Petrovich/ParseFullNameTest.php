@@ -189,4 +189,52 @@ final class ParseFullNameTest extends TestCase
             ParseFullNameTest::assertSame($expected, Petrovich::parseFullName($input));
         }
     }
+
+    public function testIrregularWhitespace(): void
+    {
+        $dataset = [
+            'Фамилия  Имя Отчество' => [
+                'lastName' => 'Фамилия',
+                'firstName' => 'Имя',
+                'middleName' => 'Отчество',
+            ],
+
+            "Фамилия\tИмя\nОтчество" => [
+                'lastName' => 'Фамилия',
+                'firstName' => 'Имя',
+                'middleName' => 'Отчество',
+            ],
+
+            ' Фамилия Имя ' => [
+                'lastName' => 'Фамилия',
+                'firstName' => 'Имя',
+                'middleName' => null,
+            ],
+        ];
+
+        foreach ($dataset as $input => $expected) {
+            ParseFullNameTest::assertSame($expected, Petrovich::parseFullName($input));
+        }
+    }
+
+    public function testSingleWordAndEmpty(): void
+    {
+        $dataset = [
+            'Фамилия' => [
+                'lastName' => 'Фамилия',
+                'firstName' => null,
+                'middleName' => null,
+            ],
+
+            '' => [
+                'lastName' => null,
+                'firstName' => null,
+                'middleName' => null,
+            ],
+        ];
+
+        foreach ($dataset as $input => $expected) {
+            ParseFullNameTest::assertSame($expected, Petrovich::parseFullName($input));
+        }
+    }
 }

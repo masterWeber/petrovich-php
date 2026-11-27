@@ -227,4 +227,44 @@ class InflectFullNameTest extends TestCase
             }
         }
     }
+
+    public function testIrregularWhitespace(): void
+    {
+        $petrovich = new Petrovich(Petrovich\Loader::load(Petrovich\Loader::getVendorRulesFilePath()));
+
+        $dataset = [
+            'Петров  Иван Сергеевич',
+            "Петров\tИван Сергеевич",
+            ' Петров Иван  Сергеевич ',
+        ];
+
+        foreach ($dataset as $input) {
+            static::assertSame(
+                'Петрова Ивана Сергеевича',
+                $petrovich->inflectFullName($input, Petrovich\Ruleset::CASE_ACCUSATIVE)
+            );
+        }
+    }
+
+    public function testSingleWordAndEmpty(): void
+    {
+        $petrovich = new Petrovich(Petrovich\Loader::load(Petrovich\Loader::getVendorRulesFilePath()));
+
+        static::assertSame(
+            'Петрова',
+            $petrovich->inflectFullName('Петров', Petrovich\Ruleset::CASE_ACCUSATIVE, Petrovich\Ruleset::GENDER_MALE)
+        );
+        static::assertSame('', $petrovich->inflectFullName('', Petrovich\Ruleset::CASE_ACCUSATIVE));
+        static::assertSame('', $petrovich->inflectFullName('   ', Petrovich\Ruleset::CASE_ACCUSATIVE));
+    }
+
+    public function testUpperCase(): void
+    {
+        $petrovich = new Petrovich(Petrovich\Loader::load(Petrovich\Loader::getVendorRulesFilePath()));
+
+        static::assertSame(
+            'ПЕТРОВА ИВАНА СЕРГЕЕВИЧА',
+            $petrovich->inflectFullName('ПЕТРОВ ИВАН СЕРГЕЕВИЧ', Petrovich\Ruleset::CASE_ACCUSATIVE)
+        );
+    }
 }
