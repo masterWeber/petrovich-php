@@ -8,11 +8,12 @@ use Masterweber\Petrovich\Petrovich\Ruleset;
 use function array_pop;
 use function array_shift;
 use function count;
-use function explode;
 use function implode;
 use function in_array;
 use function mb_strtolower;
 use function mb_substr;
+use function preg_split;
+use function trim;
 
 class Petrovich
 {
@@ -70,7 +71,7 @@ class Petrovich
      *
      * @throws Exception
      */
-    public function inflectFullName(string $fullName, int $case, string $gender = null): string
+    public function inflectFullName(string $fullName, int $case, ?string $gender = null): string
     {
         $parsed = static::parseFullName($fullName);
 
@@ -82,26 +83,21 @@ class Petrovich
             }
         }
 
-        if ($parsed['middleName'] === null) {
-            return implode(
-                ' ',
+        $result = [];
 
-                [
-                    $this->inflectLastName($parsed['lastName'], $case, $gender),
-                    $this->inflectFirstName($parsed['firstName'], $case, $gender),
-                ]
-            );
+        if ($parsed['lastName'] !== null) {
+            $result[] = $this->inflectLastName($parsed['lastName'], $case, $gender);
         }
 
-        return implode(
-            ' ',
+        if ($parsed['firstName'] !== null) {
+            $result[] = $this->inflectFirstName($parsed['firstName'], $case, $gender);
+        }
 
-            [
-                $this->inflectLastName($parsed['lastName'], $case, $gender),
-                $this->inflectFirstName($parsed['firstName'], $case, $gender),
-                $this->inflectMiddleName($parsed['middleName'], $case, $gender),
-            ]
-        );
+        if ($parsed['middleName'] !== null) {
+            $result[] = $this->inflectMiddleName($parsed['middleName'], $case, $gender);
+        }
+
+        return implode(' ', $result);
     }
 
     /**
@@ -131,7 +127,7 @@ class Petrovich
      *
      * @throws Exception
      */
-    public function inflectMiddleName(string $middleName, int $case, string $gender = null): string
+    public function inflectMiddleName(string $middleName, int $case, ?string $gender = null): string
     {
         return $this->ruleset->inflectMiddleName($middleName, $case, $gender ?? static::detectGender($middleName));
     }
@@ -156,7 +152,7 @@ class Petrovich
     public static function parseFullName(
         string $fullName
     ): array {
-        $nameParts = explode(' ', $fullName);
+        $nameParts = preg_split('/\s+/u', trim($fullName), -1, PREG_SPLIT_NO_EMPTY);
 
         $lastName = array_shift($nameParts);
         $middleName = array_pop($nameParts);

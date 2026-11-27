@@ -10,6 +10,7 @@ use function implode;
 use function in_array;
 use function mb_strlen;
 use function mb_strtolower;
+use function mb_strtoupper;
 use function mb_substr;
 use function mb_substr_count;
 use function str_replace;
@@ -393,9 +394,12 @@ class Ruleset
      */
     protected function applyRule(string $mod, string $input): string
     {
-        $result = mb_substr($input, 0, mb_strlen($input) - mb_substr_count($mod, '-'));
-        $result .= str_replace('-', '', $mod);
+        $suffix = str_replace('-', '', $mod);
 
-        return $result;
+        if (mb_strtoupper($input) === $input && mb_strtolower($input) !== $input) {
+            $suffix = mb_strtoupper($suffix);
+        }
+
+        return mb_substr($input, 0, mb_strlen($input) - mb_substr_count($mod, '-')) . $suffix;
     }
 }
